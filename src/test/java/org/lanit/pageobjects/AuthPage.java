@@ -22,8 +22,15 @@ public class AuthPage {
 
     @FindBy(css = ".v-btn__content")
     WebElement loginButton;
+    @FindBy(css = "#details-button")
+    WebElement details;
+    @FindBy(css = "#proceed-link")
+    WebElement proceed;
 
     public void loginApp(String userName, String userPassword) {
+        goTo();
+//        details.click();
+//        proceed.click();
         userInput.sendKeys(userName);
         passwordInput.sendKeys(userPassword);
         loginButton.click();
@@ -31,6 +38,6 @@ public class AuthPage {
     }
 
     public void goTo() {
-        driver.get("http://docshouse-test.k8s.lan.lanit.ru/auth");
+        driver.get("https://docshouse-test.k8s.lan.lanit.ru/auth");
     }
 }

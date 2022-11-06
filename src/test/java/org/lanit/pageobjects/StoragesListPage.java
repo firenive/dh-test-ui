@@ -13,9 +13,6 @@ public class StoragesListPage {
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(css = ".dh-workspace-area-actions div:nth-of-type(1) > div")
-    WebElement createButton;
-
     @FindBy(css = ".storage-panel")
     WebElement elementOfList;
 
