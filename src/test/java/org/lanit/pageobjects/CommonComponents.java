@@ -2,6 +2,7 @@ package org.lanit.pageobjects;
 
 import org.lanit.components.Wait;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,17 +20,17 @@ public class CommonComponents {
     }
 
     @FindBy(css = ".mdi-content-save-outline")
-     WebElement saveButton;
+     private WebElement saveButton;
 
     @FindBy (css = ".mdi-delete-outline")
-     WebElement deleteButton;
+    private WebElement deleteButton;
     @FindBy(css = ".v-icon.notranslate.mdi.mdi-plus.theme--light")
-     WebElement createButton;
+    private WebElement createButton;
 
     @FindBy(css = ".v-snack__content")
     WebElement popup;
 
-    @FindBy(xpath = ".error--text")
+    @FindBy(css = ".v-btn.error--text")
     WebElement confirm;
 
     @FindBy(css = ".app-bar__tab-item__title__text.dh-text-subtitle2")
@@ -41,7 +42,9 @@ public class CommonComponents {
 
     public  void deleteObject() {
         deleteButton.click();
-        confirm.click();
+        JavascriptExecutor executor = (JavascriptExecutor)driver;
+        executor.executeScript("arguments[0].click();", confirm);
+
     }
 
     public  void createObject() {
@@ -56,6 +59,12 @@ public class CommonComponents {
 
     public String getNotificationText() {
         Wait.waitForElementAppear(driver, By.cssSelector(".v-snack__content"), Duration.ofSeconds(20));
+        return popup.getText();
+    }
+
+    public String getNotificationText(String message) {
+        Wait.waitForElementAppear(driver,
+                By.xpath("//div[contains(text(),'" + message + "')]"), Duration.ofSeconds(20));
         return popup.getText();
     }
     public void goToList() {

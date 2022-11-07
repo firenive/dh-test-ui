@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class StoragesCardPage {
     WebDriver driver;
-    Map<String, String> values;
+    Map<String, String> storageValues;
     public StoragesCardPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -34,18 +34,18 @@ public class StoragesCardPage {
     public void fillDataStorage() throws IOException {
         Random randomInt = new Random();
         int limit = 1000;
-        values = new HashMap<>();
-        values.put("name", "Storage_ " + randomInt.nextInt(limit));
-        values.put("code", String.valueOf(randomInt.nextInt(limit)));
-        values.put("description", "Created by Selenium");
-        values.put("uri", Utilities.readProperties("mongo"));
-        storageName.sendKeys(values.get("name"));
-        storageCode.sendKeys(values.get("code"));
-        storageDescription.sendKeys(values.get("description"));
-        storageUri.sendKeys(values.get("uri"));
+        storageValues = new HashMap<>();
+        storageValues.put("name", "Storage_ " + randomInt.nextInt(limit));
+        storageValues.put("code", String.valueOf(randomInt.nextInt(limit)));
+        storageValues.put("description", "Created by Selenium");
+        storageValues.put("uri", Utilities.readProperties("mongo"));
+        storageName.sendKeys(storageValues.get("name"));
+        storageCode.sendKeys(storageValues.get("code"));
+        storageDescription.sendKeys(storageValues.get("description"));
+        storageUri.sendKeys(storageValues.get("uri"));
     }
     public Map getValues() {
-        return values;
+        return storageValues;
     }
 
     public void updateData(String description) {
@@ -56,9 +56,9 @@ public class StoragesCardPage {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        values.put("description", description);
+        storageValues.put("description", description);
         storageDescription.clear();
-        storageDescription.sendKeys(values.get("description"));
+        storageDescription.sendKeys(storageValues.get("description"));
     }
 
 }

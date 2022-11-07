@@ -18,7 +18,7 @@ import java.util.List;
 
 public class StoragesTest extends BaseTest {
 
-    StoragesCardPage card;
+    StoragesCardPage storageCard;
     CommonComponents components;
 
     @BeforeSuite
@@ -42,9 +42,9 @@ public class StoragesTest extends BaseTest {
     @Test
     public void createStorage() throws IOException {
         components.createObject();
-        card = new StoragesCardPage(driver);
-        card.fillDataStorage();
-        String code = card.getValues().get("code").toString();
+        storageCard = new StoragesCardPage(driver);
+        storageCard.fillDataStorage();
+        String code = storageCard.getValues().get("code").toString();
         components.saveObject();
         Assert.assertNotNull(code);
         Assert.assertTrue(components.getNotificationText().contains("Сохранение данных выполнено успешно"));
@@ -55,7 +55,7 @@ public class StoragesTest extends BaseTest {
     public void checkStorageInList() {
         components.goToList();
         String actual = findStorage().getText();
-        String expected = card.getValues().get("name").toString();
+        String expected = storageCard.getValues().get("name").toString();
         Assert.assertEquals(actual, expected);
 
     }
@@ -67,23 +67,24 @@ public class StoragesTest extends BaseTest {
                 .doubleClick(storage)
                 .perform();
         String newDesc = "Updated by Selenium";
-        card.updateData(newDesc);
+        storageCard.updateData(newDesc);
         components.saveObject();
         Assert.assertTrue(components.getNotificationText().contains("Сохранение данных выполнено успешно"));
 
     }
 
-    @Test (dependsOnMethods = {"createStorage", "updateStorage", "checkStorageInList"})
-    public void deleteStorage() {
-        components.deleteObject();
-        Assert.assertTrue(components.getNotificationText().contains("Удаление хранилища произведено успешно"));
-    }
+//    @Test (dependsOnMethods = {"createStorage", "updateStorage", "checkStorageInList"})
+//    public void deleteStorage() {
+//        components.deleteObject();
+//        // System.out.println(components.getNotificationText());
+//        Assert.assertNull(findStorage());
+//    }
 
 
     public WebElement findStorage() {
         List<WebElement> elements = driver.findElements(By.cssSelector(".storage-panel__name"));
         for (WebElement element : elements) {
-            if (element.getText().contains(card.getValues().get("name").toString())) {
+            if (element.getText().contains(storageCard.getValues().get("name").toString())) {
                 return element;
             }
         }
