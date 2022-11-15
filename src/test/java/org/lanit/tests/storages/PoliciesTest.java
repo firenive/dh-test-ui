@@ -1,9 +1,9 @@
-package org.lanit.tests.storages_service;
+package org.lanit.tests.storages;
 
 import org.lanit.components.BaseTest;
-import org.lanit.pageobjects.CommonComponents;
-import org.lanit.pageobjects.PoliciesCardPage;
-import org.lanit.pageobjects.StoragesCardPage;
+import org.lanit.pageobjects.base.CommonComponents;
+import org.lanit.pageobjects.storages.PoliciesCardPage;
+import org.lanit.pageobjects.storages.StoragesCardPage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -12,19 +12,19 @@ import java.io.IOException;
 public class PoliciesTest extends BaseTest {
     PoliciesCardPage policyCard;
     CommonComponents components;
-    @Test
-    public void createPolicy() throws IOException {
-        components.goToList();
-        policyCard = new PoliciesCardPage(driver);
-        policyCard.section.click();
-        components.createObject();
-        StoragesCardPage storage = new StoragesCardPage(driver);
-        policyCard.fillDataPolicy(storage.getValues().get("name").toString());
-        components.saveObject();
-
-        Assert.assertTrue(components.getNotificationText().contains("Сохранение данных выполнено успешно"));
-
-    }
+//    @Test
+//    public void createPolicy() throws IOException {
+//        components.goToList();
+//        policyCard = new PoliciesCardPage(driver);
+//        policyCard.section.click();
+//        components.createObject();
+//        StoragesCardPage storage = new StoragesCardPage(driver);
+//        policyCard.fillDataPolicy(storage.getValues().get("name").toString());
+//        components.saveObject();
+//
+//        Assert.assertTrue(components.getNotificationText().contains("Сохранение данных выполнено успешно"));
+//
+//    }
 
 //    @Test (dependsOnMethods = {"createStorage"})
 //    public void checkStorageInList() {

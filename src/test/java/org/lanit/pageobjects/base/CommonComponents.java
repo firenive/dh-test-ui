@@ -1,4 +1,4 @@
-package org.lanit.pageobjects;
+package org.lanit.pageobjects.base;
 
 import org.lanit.components.Wait;
 import org.openqa.selenium.By;

@@ -1,5 +1,6 @@
-package org.lanit.pageobjects;
+package org.lanit.pageobjects.storages;
 
+import org.lanit.pageobjects.base.CommonComponents;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,7 +32,7 @@ public class PoliciesCardPage {
     @FindBy (xpath = "//label[contains(text(),'Период удержания контента, мин')]/following::input[1]")
     WebElement policyRetentionPeriod;
 
-    @FindBy (xpath = "//label[contains(text(),'Описание')]/following::input[1]")
+    @FindBy (xpath = "//label[contains(text(),'Описание')]/following::textarea[1]")
     WebElement policyDescription;
 
     @FindBy (xpath = "//span[contains(text(),'Выбрать')]")
@@ -48,7 +49,6 @@ public class PoliciesCardPage {
         policyValues.put("code", String.valueOf(randomInt.nextInt(limit)));
         policyValues.put("description", "Created by Selenium");
         policyValues.put("retentionPeriod", String.valueOf(0));
-
         policyName.sendKeys(policyValues.get("name"));
         policyCode.sendKeys(policyValues.get("code"));
         policyDescription.sendKeys(policyValues.get("description"));
@@ -62,7 +62,23 @@ public class PoliciesCardPage {
         driver.findElement(By.xpath("//td[contains(text(),'" + storageName + "')]/preceding::td[1]/div"))
                 .click();
         selectButton.click();
+    }
 
+    public String getPolicyValues(String key) {
+        return policyValues.get(key);
+    }
+
+    public void updateData(String description) {
+        Random randomInt = new Random();
+        int limit = 1000;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        policyValues.put("description", description);
+        policyDescription.clear();
+        policyDescription.sendKeys(policyValues.get("description"));
     }
 
 

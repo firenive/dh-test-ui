@@ -1,4 +1,4 @@
-package org.lanit.pageobjects;
+package org.lanit.pageobjects.storages;
 
 import org.lanit.components.Utilities;
 import org.openqa.selenium.WebDriver;

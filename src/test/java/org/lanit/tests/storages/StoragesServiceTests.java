@@ -1,24 +1,28 @@
-package org.lanit.tests.storages_service;
+package org.lanit.tests.storages;
 
 import org.lanit.components.BaseTest;
 import org.lanit.components.Wait;
-import org.lanit.pageobjects.StoragesCardPage;
-import org.lanit.pageobjects.CommonComponents;
+import org.lanit.pageobjects.storages.PoliciesCardPage;
+import org.lanit.pageobjects.storages.PoliciesListPage;
+import org.lanit.pageobjects.storages.StoragesCardPage;
+import org.lanit.pageobjects.base.CommonComponents;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-public class StoragesTest extends BaseTest {
+public class StoragesServiceTests extends BaseTest {
 
     StoragesCardPage storageCard;
+    PoliciesCardPage policyCard;
     CommonComponents components;
 
     @BeforeSuite
@@ -51,7 +55,7 @@ public class StoragesTest extends BaseTest {
 
     }
 
-    @Test (dependsOnMethods = {"createStorage"})
+    @Test(dependsOnMethods = {"createStorage"})
     public void checkStorageInList() {
         components.goToList();
         String actual = findStorage().getText();
@@ -60,7 +64,7 @@ public class StoragesTest extends BaseTest {
 
     }
 
-    @Test (dependsOnMethods = {"createStorage", "checkStorageInList"} )
+    @Test(dependsOnMethods = {"checkStorageInList"})
     public void updateStorage() {
         WebElement storage = findStorage();
         new Actions(driver)
@@ -72,6 +76,50 @@ public class StoragesTest extends BaseTest {
         Assert.assertTrue(components.getNotificationText().contains("Сохранение данных выполнено успешно"));
 
     }
+    @BeforeTest
+    public void beforeEachTest() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test(dependsOnMethods = {"updateStorage"})
+    public void createPolicy() throws IOException {
+        components.goToList();
+        policyCard = new PoliciesCardPage(driver);
+        policyCard.section.click();
+        components.createObject();
+        policyCard.fillDataPolicy(storageCard.getValues().get("name").toString());
+        components.saveObject();
+
+        Assert.assertTrue(components.getNotificationText().contains("Сохранение данных выполнено успешно"));
+
+    }
+
+    @Test(dependsOnMethods = {"createPolicy"})
+    public void checkPolicyInList() {
+        components.goToList();
+        PoliciesListPage page = new PoliciesListPage(driver);
+        String actual = page.getPolicy(policyCard.getPolicyValues("name")).getText();
+        String expected = policyCard.getPolicyValues("name");
+        Assert.assertEquals(actual, expected);
+
+    }
+
+    @Test(dependsOnMethods = {"checkPolicyInList"})
+    public void updatePolicy() {
+        PoliciesListPage page = new PoliciesListPage(driver);
+        new Actions(driver)
+                .doubleClick(page.getPolicy(policyCard.getPolicyValues("name")))
+                .perform();
+        policyCard.updateData("Updated by Selenium");
+        components.saveObject();
+        Assert.assertTrue(components.getNotificationText().contains("Сохранение данных выполнено успешно"));
+
+    }
+
 
 //    @Test (dependsOnMethods = {"createStorage", "updateStorage", "checkStorageInList"})
 //    public void deleteStorage() {
